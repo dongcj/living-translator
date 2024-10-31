@@ -43,7 +43,7 @@ class ResultExporter(LoopWorkerBase):
             if os.path.exists(output_file_path):
                 os.remove(output_file_path)
                 with open(output_file_path, 'a', encoding='utf-8') as f:
-                    f.write(WEBVTT + '\n\n')
+                    f.write("WEBVTT" + '\n\n')
 
     def loop(self, input_queue: queue.SimpleQueue[TranslationTask], output_whisper_result: bool,
              output_timestamps: bool, proxy: str, output_file_path: str, cqhttp_url: str,
