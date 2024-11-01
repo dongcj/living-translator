@@ -53,8 +53,8 @@ class OpenaiWhisper(LoopWorkerBase):
                     now_utc = datetime.datetime.utcnow()
                     now_utc_with_tz = now_utc.replace(tzinfo=datetime.timezone.utc)
                     now_timestamp = int(now_utc_with_tz.timestamp())
-                    timestamp_text = '{} --> {}'.format(sec2str(task.time_range[0] + now_timestamp),
-                                                        sec2str(task.time_range[1] + now_timestamp))
+                    timestamp_text = '{} --> {}'.format(sec2str(now_timestamp),
+                                                        sec2str(task.time_range[1] - task.time_range[0] + now_timestamp))
                     print(timestamp_text + ' ' + task.transcribed_text)
                 else:
                     print(task.transcribed_text)
