@@ -56,8 +56,8 @@ class ResultExporter(LoopWorkerBase):
             now_utc = datetime.datetime.utcnow()
             now_utc_with_tz = now_utc.replace(tzinfo=datetime.timezone.utc)
             now_timestamp = int(now_utc_with_tz.timestamp())
-            timestamp_text = '{} --> {}'.format(sec2str(task.time_range[0] + now_timestamp),
-                                                sec2str(task.time_range[1] + now_timestamp))
+            timestamp_text = '{} --> {}'.format(sec2str(now_timestamp),
+                                                sec2str(task.time_range[1] - task.time_range[0] + now_timestamp))
             text_to_send = (task.transcribed_text + '\n') if output_whisper_result else ''
             if output_timestamps:
                 text_to_send = timestamp_text + '\n' + text_to_send
