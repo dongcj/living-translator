@@ -1,6 +1,7 @@
 import os
 import queue
 import requests
+import datetime
 
 from .common import TranslationTask, LoopWorkerBase, sec2str
 
@@ -52,8 +53,11 @@ class ResultExporter(LoopWorkerBase):
         proxies = {"http": proxy, "https": proxy} if proxy else None
         while True:
             task = input_queue.get()
-            timestamp_text = '{} --> {}'.format(sec2str(task.time_range[0]),
-                                                sec2str(task.time_range[1]))
+            now_utc = datetime.datetime.utcnow()
+            now_utc_with_tz = now_utc.replace(tzinfo=datetime.timezone.utc)
+            now_timestamp = int(now_utc_with_tz.timestamp())
+            timestamp_text = '{} --> {}'.format(sec2str(task.time_range[0] + now_timestamp),
+                                                sec2str(task.time_range[1] + now_timestamp))
             text_to_send = (task.transcribed_text + '\n') if output_whisper_result else ''
             if output_timestamps:
                 text_to_send = timestamp_text + '\n' + text_to_send
