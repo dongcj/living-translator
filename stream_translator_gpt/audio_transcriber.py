@@ -1,5 +1,6 @@
 import os
 import queue
+import datetime
 from scipy.io.wavfile import write as write_audio
 
 import numpy as np
@@ -49,8 +50,11 @@ class OpenaiWhisper(LoopWorkerBase):
                 continue
             if print_result:
                 if output_timestamps:
-                    timestamp_text = '{} --> {}'.format(sec2str(task.time_range[0]),
-                                                        sec2str(task.time_range[1]))
+                    now_utc = datetime.datetime.utcnow()
+                    now_utc_with_tz = now_utc.replace(tzinfo=datetime.timezone.utc)
+                    now_timestamp = int(now_utc_with_tz.timestamp())
+                    timestamp_text = '{} --> {}'.format(sec2str(task.time_range[0] + now_timestamp),
+                                                        sec2str(task.time_range[1] + now_timestamp))
                     print(timestamp_text + ' ' + task.transcribed_text)
                 else:
                     print(task.transcribed_text)
